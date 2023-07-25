@@ -15,11 +15,19 @@ app.get('/', (req, res) => {
 })
 
 app.get('/restaurants/:id', (req, res) => {
-  const restaurant = restaurantList.results.find(
-    restaurant => restaurant.id.toString() === req.params.id
+  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.id
   )
   res.render('show', { restaurant: restaurant })
 })
+
+app.get('/search', (req, res) => {
+  const keyword = req.query.keyword
+  const searchRestaurants = restaurantList.results.filter(restaurant => {
+    return restaurant.name.toLowerCase().trim().includes(keyword.toLowerCase().trim()) || restaurant.category.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+  })
+  res.render('index', { restaurants: searchRestaurants, keyword: keyword })
+})
+
 
 app.listen(port, () => {
   console.log(`App is listening on localhost:${port}`)
