@@ -6,11 +6,11 @@ const port = 3000
 const exphbs = require('express-handlebars')
 
 // includes Mongoose related variables
+const mongoose = require('mongoose')
+
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-
-const mongoose = require('mongoose')
 mongoose.connect(process.env.MONGODB_URI)
 
 const db = mongoose.connection
@@ -23,7 +23,7 @@ db.once('open', () => {
   console.log('mongodb connected!')
 })
 
-const restaurantList = require('./restaurants.json')
+// const restaurantList = require('./restaurants.json')  連線 MONGODB，原資料改當種子資料
 
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
