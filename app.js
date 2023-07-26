@@ -4,6 +4,7 @@ const app = express()
 const port = 3000
 
 const exphbs = require('express-handlebars')
+const Restaurant = require('./models/restaurants')  // 載入 Restaurant Model
 
 // includes Mongoose related variables
 const mongoose = require('mongoose')
@@ -31,7 +32,9 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-  res.render('index', { restaurants: restaurantList.results })
+  Restaurant.find() // 取出 Restaurant Model 裡的所有資料
+    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
+    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
 })
 
 app.get('/restaurants/:id', (req, res) => {
