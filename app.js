@@ -5,6 +5,7 @@ const port = 3000
 
 const exphbs = require('express-handlebars')
 const Restaurant = require('./models/restaurant')  // 載入 Restaurant Model
+const methodOverride = require('method-override')
 
 // includes Mongoose related variables
 const mongoose = require('mongoose')
@@ -31,6 +32,7 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 // setting routes
 app.get('/', (req, res) => {
@@ -70,8 +72,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.error(err))
 })
 
-// 暫時用 post ，之後要改成 PUT
-app.post('/restaurants/:id/edit', (req, res) => {
+app.put('/restaurants/:id', (req, res) => {
   const id = req.params.id
   const { name, nameEn, category, location, phone } = req.body
   // const name = req.body.name
@@ -89,8 +90,7 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.error(err))
 })
 
-// 暫時用 post ，之後要改成 DELETE
-app.post('/restaurants/:id/delete', (req, res) => {
+app.delete('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .then(restaurant => restaurant.remove())

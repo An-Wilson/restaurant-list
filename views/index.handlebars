@@ -42,7 +42,7 @@
           <div class="d-flex justify-content-end align-items-center mb-3">
             <a href="/restaurants/{{ this._id }}/edit" class="mx-2">修改</a>
             <a href="/restaurants/{{ this._id }}" class="mx-2">詳細資料</a>
-            <form action="/restaurants/{{ this._id }}/delete" method="POST">
+            <form action="/restaurants/{{ this._id }}?_method=DELETE" method="POST">
               <button type="submit" class="btn btn-warning mx-1">刪除</button>
             </form>
           </div>
