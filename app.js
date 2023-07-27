@@ -33,7 +33,6 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
 // setting routes
-
 app.get('/', (req, res) => {
   Restaurant.find() // 取出 Restaurant Model 裡的所有資料
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
@@ -59,9 +58,36 @@ app.get('/restaurants/:id', (req, res) => {
   const id = req.params.id
   return Restaurant.findById(id)
     .lean()
-    .then((restaurant) => res.render('show', { restaurant }))
+    .then(restaurant => res.render('show', { restaurant }))
     .catch(err => console.error(err))
 })
+
+app.get('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then(restaurant => res.render('edit', { restaurant }))
+    .catch(err => console.error(err))
+})
+
+app.post('/restaurants/:id/edit', (req, res) => {
+  const id = req.params.id
+  const { name, nameEn, category, location, phone } = req.body
+  // const name = req.body.name
+  // restaurant.name = req.body.name
+  return Restaurant.findById(id)
+    .then(restaurant => {
+      restaurant.name = name
+      restaurant.name_en = nameEn
+      restaurant.category = category
+      restaurant.location = location
+      restaurant.phone = phone
+      return restaurant.save()
+    })
+    .then(() => res.redirect(`/restaurants/${id}`))
+    .catch(err => console.error(err))
+})
+
 
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
