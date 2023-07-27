@@ -5,7 +5,7 @@ const seeders = require('../../restaurants.json') // 載入種子資料
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 

@@ -12,7 +12,7 @@ const mongoose = require('mongoose')
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 const db = mongoose.connection
 
@@ -70,6 +70,7 @@ app.get('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.error(err))
 })
 
+// 暫時用 post ，之後要改成 PUT
 app.post('/restaurants/:id/edit', (req, res) => {
   const id = req.params.id
   const { name, nameEn, category, location, phone } = req.body
@@ -88,13 +89,28 @@ app.post('/restaurants/:id/edit', (req, res) => {
     .catch(err => console.error(err))
 })
 
+// 暫時用 post ，之後要改成 DELETE
+app.post('/restaurants/:id/delete', (req, res) => {
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .then(restaurant => restaurant.remove())
+    .then(() => res.redirect('/'))
+    .catch(err => console.error(err))
+})
 
+// 搜尋功能：Controller 把 keyword 給 Model ， Model 再發請求給資料庫
+// 資料庫先撈出所有資料，再用 keyword 做篩選
 app.get('/search', (req, res) => {
   const keyword = req.query.keyword
-  const searchRestaurants = restaurantList.results.filter(restaurant => {
-    return restaurant.name.toLowerCase().trim().includes(keyword.toLowerCase().trim()) || restaurant.category.toLowerCase().trim().includes(keyword.toLowerCase().trim())
-  })
-  res.render('index', { restaurants: searchRestaurants, keyword: keyword })
+  Restaurant.find() // 取出 Restaurant Model 裡的所有資料
+    .lean()
+    .then(allRestaurants => {
+      const filteredRestaurants = allRestaurants.filter(restaurant => {
+        return restaurant.name.toLowerCase().trim().includes(keyword.toLowerCase().trim()) || restaurant.category.toLowerCase().trim().includes(keyword.toLowerCase().trim())
+      })
+      res.render('index', { restaurants: filteredRestaurants, keyword })
+    })
+    .catch(err => console.error(err))
 })
 
 

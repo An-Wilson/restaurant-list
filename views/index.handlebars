@@ -37,8 +37,10 @@
                   <i class="fas fa-star fa-xs"></i>
                 </span>
                 <div class="d-flex justify-content-end">
-                  <a href="./restaurants/{{ this._id }}/edit" class="btn btn-outline-primary mx-1">編輯</a>
-                  <a href="./restaurants/{{ this._id }}/delete" class="btn btn-warning mx-1">刪除</a>
+                  <a href="/restaurants/{{ this._id }}/edit" class="btn btn-outline-primary mx-1">編輯</a>
+                  <form action="/restaurants/{{ this._id }}/delete" method="POST">
+                    <button type="submit" class="btn btn-warning mx-1">刪除</button>
+                  </form>
                 </div>
               </div>
             </div>
