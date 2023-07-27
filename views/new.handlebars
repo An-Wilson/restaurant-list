@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <form action="/restaurants" method="POST">
+    <div class="row mb-3">
+      <label for="name" class="col-sm-2 col-form-label">店名</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="name" name="name" placeholder="請輸入店名" required>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="nameEn" class="col-sm-2 col-form-label">店名（英文）</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="nameEn" name="nameEn" placeholder="請輸入餐廳的英文名字">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="category" class="col-sm-2 col-form-label">類別</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="category" name="category" placeholder="餐廳類別">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="location" class="col-sm-2 col-form-label">地址</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" id="location" name="location" placeholder="餐廳地址">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="phone" class="col-sm-2 col-form-label">電話</label>
+      <div class="col-sm-10">
+        <input type="tel" class="form-control" id="phone" name="phone" placeholder="餐廳電話">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">新增此餐廳</button>
+  </form>
+</div>
+
+{{!-- id: {
+type: Number,
+},
+
+image: {
+type: String
+},
+
+google_map: {
+type: String
+},
+rating: {
+type: Number
+},
+description: {
+type: String
+} --}}

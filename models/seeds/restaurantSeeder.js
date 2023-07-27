@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Restaurant = require('../restaurants')  // 載入 restaurant model
+const Restaurant = require('../restaurant')  // 載入 restaurant model
 const seeders = require('../../restaurants.json') // 載入種子資料
 
 if (process.env.NODE_ENV !== 'production') {

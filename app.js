@@ -4,7 +4,7 @@ const app = express()
 const port = 3000
 
 const exphbs = require('express-handlebars')
-const Restaurant = require('./models/restaurants')  // 載入 Restaurant Model
+const Restaurant = require('./models/restaurant')  // 載入 Restaurant Model
 
 // includes Mongoose related variables
 const mongoose = require('mongoose')
@@ -30,17 +30,37 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true }))
+
+// setting routes
 
 app.get('/', (req, res) => {
   Restaurant.find() // 取出 Restaurant Model 裡的所有資料
     .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
     .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
+    .catch(err => console.error(err))
+})
+
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
+app.post('/restaurants', (req, res) => {
+  const { name, nameEn, category, location, phone } = req.body
+  Restaurant.create({ name, nameEn, category, location, phone })
+    .then(() => res.redirect('/'))
+    .catch(err => console.error(err))
 })
 
 app.get('/restaurants/:id', (req, res) => {
-  const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.id
-  )
-  res.render('show', { restaurant: restaurant })
+  // const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.id
+  // )
+  // res.render('show', { restaurant: restaurant })
+  const id = req.params.id
+  return Restaurant.findById(id)
+    .lean()
+    .then((restaurant) => res.render('show', { restaurant }))
+    .catch(err => console.error(err))
 })
 
 app.get('/search', (req, res) => {
