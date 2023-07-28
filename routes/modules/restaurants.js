@@ -10,8 +10,8 @@ router.get('/new', (req, res) => {
 
 // 功能：新增餐廳
 router.post('/', (req, res) => {
-  const { name, nameEn, category, location, phone } = req.body
-  Restaurant.create({ name, nameEn, category, location, phone })
+  const { name, nameEn, category, location, phone, image, rating, description } = req.body
+  Restaurant.create({ name, nameEn, category, location, phone, image, rating, description })
     .then(() => res.redirect('/'))
     .catch(err => console.error(err))
 })
