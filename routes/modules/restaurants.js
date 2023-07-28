@@ -66,18 +66,4 @@ router.delete('/:id', (req, res) => {
     .catch(err => console.error(err))
 })
 
-// 功能：搜尋餐廳
-router.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  Restaurant.find() // 取出 Restaurant Model 裡的所有資料
-    .lean()
-    .then(allRestaurants => {
-      const filteredRestaurants = allRestaurants.filter(restaurant => {
-        return restaurant.name.toLowerCase().trim().includes(keyword.toLowerCase().trim()) || restaurant.category.toLowerCase().trim().includes(keyword.toLowerCase().trim())
-      })
-      res.render('index', { restaurants: filteredRestaurants, keyword })
-    })
-    .catch(err => console.error(err))
-})
-
 module.exports = router
