@@ -6,6 +6,7 @@ const port = 3000
 const exphbs = require('express-handlebars')
 const Restaurant = require('./models/restaurant')  // 載入 Restaurant Model
 const methodOverride = require('method-override')
+const routes = require('./routes')  // 預設自動找 index.js
 
 // includes Mongoose related variables
 const mongoose = require('mongoose')
@@ -33,85 +34,9 @@ app.set('view engine', 'handlebars')
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+app.use(routes)
 
-// setting routes
-app.get('/', (req, res) => {
-  Restaurant.find() // 取出 Restaurant Model 裡的所有資料
-    .lean() // 把 Mongoose 的 Model 物件轉換成乾淨的 JavaScript 資料陣列
-    .then(restaurants => res.render('index', { restaurants })) // 將資料傳給 index 樣板
-    .catch(err => console.error(err))
-})
 
-app.get('/restaurants/new', (req, res) => {
-  res.render('new')
-})
-
-app.post('/restaurants', (req, res) => {
-  const { name, nameEn, category, location, phone } = req.body
-  Restaurant.create({ name, nameEn, category, location, phone })
-    .then(() => res.redirect('/'))
-    .catch(err => console.error(err))
-})
-
-app.get('/restaurants/:id', (req, res) => {
-  // const restaurant = restaurantList.results.find(restaurant => restaurant.id.toString() === req.params.id
-  // )
-  // res.render('show', { restaurant: restaurant })
-  const id = req.params.id
-  return Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('show', { restaurant }))
-    .catch(err => console.error(err))
-})
-
-app.get('/restaurants/:id/edit', (req, res) => {
-  const id = req.params.id
-  return Restaurant.findById(id)
-    .lean()
-    .then(restaurant => res.render('edit', { restaurant }))
-    .catch(err => console.error(err))
-})
-
-app.put('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  const { name, nameEn, category, location, phone } = req.body
-  // const name = req.body.name
-  // restaurant.name = req.body.name
-  return Restaurant.findById(id)
-    .then(restaurant => {
-      restaurant.name = name
-      restaurant.name_en = nameEn
-      restaurant.category = category
-      restaurant.location = location
-      restaurant.phone = phone
-      return restaurant.save()
-    })
-    .then(() => res.redirect(`/restaurants/${id}`))
-    .catch(err => console.error(err))
-})
-
-app.delete('/restaurants/:id', (req, res) => {
-  const id = req.params.id
-  return Restaurant.findById(id)
-    .then(restaurant => restaurant.remove())
-    .then(() => res.redirect('/'))
-    .catch(err => console.error(err))
-})
-
-// 搜尋功能：Controller 把 keyword 給 Model ， Model 再發請求給資料庫
-// 資料庫先撈出所有資料，再用 keyword 做篩選
-app.get('/search', (req, res) => {
-  const keyword = req.query.keyword
-  Restaurant.find() // 取出 Restaurant Model 裡的所有資料
-    .lean()
-    .then(allRestaurants => {
-      const filteredRestaurants = allRestaurants.filter(restaurant => {
-        return restaurant.name.toLowerCase().trim().includes(keyword.toLowerCase().trim()) || restaurant.category.toLowerCase().trim().includes(keyword.toLowerCase().trim())
-      })
-      res.render('index', { restaurants: filteredRestaurants, keyword })
-    })
-    .catch(err => console.error(err))
-})
 
 
 app.listen(port, () => {
