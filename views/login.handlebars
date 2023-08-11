@@ -1,0 +1,21 @@
+<div class="col-md-6 m-auto mt-5 card">
+  <div class="card-header">
+    <h1 class="text-center">Login</h1>
+  </div>
+  <div class="card-body">
+    <form action="/users/login" method="POST">
+      <div class="mb-3">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" class="form-control" placeholder="Enter email">
+      </div>
+      <div class="mb-3">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter password">
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+      </div>
+    </form>
+    <p class="lead mt-4">No Account? <a href="/users/register">Register</a></p>
+  </div>
+</div>
