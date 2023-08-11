@@ -1,6 +1,7 @@
 // 1. 先載入相關模組
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
+const User = require('../models/user')
 
 // 2. module.exports 並初始化套件
 module.exports = app => {
