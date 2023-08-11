@@ -17,7 +17,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main' }))
 app.set('view engine', 'handlebars')
 
 app.use(session({
-  secret:'ThisIsMySecret',
+  secret: 'ThisIsMySecret',
   resave: false,
   saveUninitialized: true
 }))
@@ -27,6 +27,12 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
 usePassport(app)
+
+app.use((req, res, next) => {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user // user 是在反序列化時取出的資訊
+  next()
+})
 
 app.use(routes)
 
