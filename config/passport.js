@@ -10,14 +10,17 @@ module.exports = app => {
   app.use(passport.session())
   // 設定本地登入策略
   passport.use(new LocalStrategy(
-    { usernameField: 'email' }, (email, password, done) => {
+    // 設定 passReqToCallback 及 引數 req
+    { usernameField: 'email', passReqToCallback: true }, (req, email, password, done) => {
       User.findOne({ email })
         .then(user => {
           if (!user) {
-            return done(null, false, { message: '此帳號不存在' })
+            // return done(null, false, { message: '此帳號不存在' })
+            return done(null, false, req.flash('warning_msg', '此帳號不存在'))
           }
           if (user.password !== password) {
-            return done(null, false, { message: '密碼核對錯誤' })
+            return done(null, false, req.flash('warning_msg', '密碼核對錯誤'))
+            // return done(null, false, { message: '密碼核對錯誤' })
           }
           return done(null, user)
         })

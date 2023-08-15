@@ -4,6 +4,7 @@ const session = require('express-session')
 const exphbs = require('express-handlebars')
 const Restaurant = require('./models/restaurant')  // 載入 Restaurant Model
 const methodOverride = require('method-override')
+const flash = require('connect-flash')
 
 const routes = require('./routes')  // 預設自動找 index.js
 
@@ -28,9 +29,12 @@ app.use(methodOverride('_method'))
 
 usePassport(app)
 
+app.use(flash())
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.isAuthenticated()
   res.locals.user = req.user // user 是在反序列化時取出的資訊
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
   next()
 })
 

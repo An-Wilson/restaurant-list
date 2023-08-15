@@ -3,14 +3,15 @@
     <h1 class="text-center">Login</h1>
   </div>
   <div class="card-body">
+    {{> message}}
     <form action="/users/login" method="POST">
       <div class="mb-3">
         <label for="email">Email</label>
-        <input type="text" id="email" name="email" class="form-control" placeholder="Enter email">
+        <input type="text" id="email" name="email" class="form-control" placeholder="Enter email" required>
       </div>
       <div class="mb-3">
         <label for="password">Password</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="Enter password">
+        <input type="password" id="password" name="password" class="form-control" placeholder="Enter password" required>
       </div>
       <div class="d-grid">
         <button type="submit" class="btn btn-primary btn-lg">Login</button>
