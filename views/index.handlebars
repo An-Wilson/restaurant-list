@@ -1,4 +1,4 @@
-<div class="container d-flex align-items-end" style="padding: 0 110px;">
+<div class="container d-flex align-items-end" style="padding: 0 120px;">
   <!-- search bar -->
   <div class="container search-bar">
     <div class="search-bar-outer">
@@ -17,15 +17,17 @@
     </div>
   </div>
   <!-- sort selector -->
-  <form action="/sort">
-    <select class="form-select" name="sort" id="sort">
-      <option selected>排序</option>
-      <option value="0">A - Z</option>
-      <option value="1">Z - A</option>
-      <option value="2">類別</option>
-      <option value="3">地區</option>
-    </select>
-  </form>
+  <div class="dropdown">
+    <button class="btn btn-light border border-3 dropdown-toggle" type="button" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      排序方式選擇
+    </button>
+    <ul class="dropdown-menu">
+      {{#each sorts}}
+      <li><a class="dropdown-item" href="/sort/{{this.sortBy}}">{{ this.sortName }}</a></li>
+      {{/each}}
+    </ul>
+  </div>
 </div>
 
 <!-- restaurant list -->
